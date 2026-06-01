@@ -4,6 +4,7 @@ import os
 
 st.title("AI Influencer Stüdyosu")
 
+# API Anahtarı girişi
 api_key = st.text_input("Replicate API Anahtarını Gir:", type="password")
 if api_key:
     os.environ["REPLICATE_API_TOKEN"] = api_key
@@ -16,9 +17,9 @@ if st.button("Üret"):
         try:
             st.write("Üretiliyor, lütfen bekle...")
             
-            # Burada dosyayı geçici olarak kaydedip Replicate'e veriyoruz
+            # InstantID için en güncel ve stabil model adresi
             output = replicate.run(
-                "zsxkib/instantid-flux:latest",
+                "adirik/instantid:e809311e97588e3678087799d55a5b57f12e84c568f188981f9f59516634c4d5",
                 input={
                     "image": uploaded_file, 
                     "prompt": prompt,
@@ -28,6 +29,6 @@ if st.button("Üret"):
             )
             st.image(output)
         except Exception as e:
-            st.error(f"Bir hata oluştu: {str(e)}")
+            st.error(f"Hata: {str(e)}")
     else:
         st.error("Lütfen API anahtarını gir ve bir fotoğraf yükle!")
