@@ -10,25 +10,25 @@ if api_key:
     os.environ["REPLICATE_API_TOKEN"] = api_key
 
 uploaded_file = st.file_uploader("Bir fotoğraf yükle", type=["jpg", "png"])
-prompt = st.text_input("Ne yapsın?", "A realistic photo of the person, walking in a sunny street, casual outfit, natural skin texture, 8k")
+prompt = st.text_input("Ne yapsın?", "A realistic photo of a person in a sunny street, natural skin, 8k")
 
 if st.button("Üret"):
     if api_key and uploaded_file:
         try:
             st.write("Üretiliyor, lütfen bekle...")
             
-            # InstantID için en güncel ve stabil model adresi
+            # Herkesin erişebildiği stabil model
             output = replicate.run(
-                "adirik/instantid:e809311e97588e3678087799d55a5b57f12e84c568f188981f9f59516634c4d5",
+                "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
                 input={
-                    "image": uploaded_file, 
                     "prompt": prompt,
-                    "controlnet_weight": 1.0,
-                    "ip_adapter_weight": 0.8
+                    "num_output": 1,
+                    "aspect_ratio": "9:16",
+                    "output_format": "webp"
                 }
             )
-            st.image(output)
+            st.image(output[0])
         except Exception as e:
             st.error(f"Hata: {str(e)}")
     else:
-        st.error("Lütfen API anahtarını gir ve bir fotoğraf yükle!")
+        st.error("API anahtarını gir ve fotoğraf yükle!")
